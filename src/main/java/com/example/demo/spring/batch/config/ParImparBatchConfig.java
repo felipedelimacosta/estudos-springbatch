@@ -1,6 +1,5 @@
 package com.example.demo.spring.batch.config;
 
-import com.example.demo.spring.batch.model.User;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -13,45 +12,33 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.function.FunctionItemProcessor;
+import org.springframework.batch.item.support.IteratorItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
-public class SpringBatchConfig {
-
-   /* @Autowired
-    private JobBuilderFactory jobBuilderFactory;
+public class ParImparBatchConfig {
 
     @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+    private JobBuilderFactory jobBuilderFactory;
+
+
 
     @Bean
-    public Job imprimeOlaJob(){
+    public Job imprimeParImparJob(Step imprimeParImpartep){
 
         return jobBuilderFactory
-                .get("imprimeOlaJob")
-                .start(imprimeOlaStep())
+                .get("imprimeParImparJob")
+                .start(imprimeParImpartep)
                 .incrementer(new RunIdIncrementer()) // UTILIZADO PARA EXECUTAR O JOB, SEM PRECISAR PASSAR UM OUTRO PARAMETRO, POIS O INCREMENTER JÁ VAI SER O PARAMETRO UTILIZADO PARA DIFERENCIAR A EXECUCAO DE CADA JOB
                 .build();
-    }
-
-
-    private Step imprimeOlaStep() {
-        return stepBuilderFactory
-                .get("imprimeOlaStep")
-                .tasklet(imprimeOlaTasklet("Felipe"))
-                .build();
-
     }
 
     @Bean
