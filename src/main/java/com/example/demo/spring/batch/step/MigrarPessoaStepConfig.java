@@ -1,0 +1,30 @@
+package com.example.demo.spring.batch.step;
+
+import com.example.demo.spring.batch.model.Pessoa;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MigrarPessoaStepConfig {
+
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
+
+
+    @Bean
+    public Step migrarPessoaStep(ItemReader<Pessoa> arquivoPessoaReader,
+                                 ItemWriter<Pessoa> pessoaWriter) {
+        return stepBuilderFactory
+                .get("migrarPessoaStep")
+                .<Pessoa, Pessoa> chunk(1) //<LIDO, ESCRITO> chunk
+                .reader(arquivoPessoaReader)
+                .writer(pessoaWriter)
+                .build();
+
+    }
+}
